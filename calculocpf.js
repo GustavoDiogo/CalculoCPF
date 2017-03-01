@@ -1,27 +1,29 @@
-$(document).ready(function(){
-  $("#input").change(function(){
+function calculacpf(){
+  var cpf = $("#input").val();
+
+  // Todos esses dígitos funcionam no cálculo, por isso há a necessidade de falar que é inválido logo de cara
+  if(cpf != "000.000.000-00"
+    && cpf != "111.111.111-11"
+    && cpf != "222.222.222-22"
+    && cpf != "333.333.333-44"
+    && cpf != "555.555.555-55"
+    && cpf != "666.666.666-66"
+    && cpf != "777.777.777-77"
+    && cpf != "888.888.888-88"
+    && cpf != "999.999.999-99")
+  {
     var j = 0;
     var cpfsemdigito = [];
-    var cpf = $("#input").val();
 
-    if(cpf != "000.000.000-00"
-      && cpf != "111.111.111-11"
-      && cpf != "222.222.222-22"
-      && cpf != "333.333.333-44"
-      && cpf != "555.555.555-55"
-      && cpf != "666.666.666-66"
-      && cpf != "777.777.777-77"
-      && cpf != "888.888.888-88"
-      && cpf != "999.999.999-99")
-    {
       // O tamanho total do cpf é 14 pois conta-se os '.'' e os '-'
       for (var i = 0; i < 14; i++){
         if(cpf[i] !== '.' && cpf[i] !== '-'){
-          //Armazena num index novo pois se for utilizar o index i, irá armazenar em posições inválidas             
+          //Armazena num index j novo pois se for utilizar o index i, irá armazenar em posições inválidas             
           cpfsemdigito[j] = cpf[i]; 
           j++;
         }            
       }
+
       // O peso1 decrementa até 2
 
       var peso1 = 10;
@@ -35,6 +37,7 @@ $(document).ready(function(){
       }
 
       //O resto da divisão subtrai-se com o 11, se for maior que 9 o primeiro dígito tem que ser 0 para ser considerado um CPF válido
+      //Caso contrário o primeiro dígito tem que ser igual ao resultado de 11 - resto da divisão
 
       var restodasoma1 = totalsoma1%11;
       var totalsubtracao1 = 11 - restodasoma1;
@@ -50,7 +53,6 @@ $(document).ready(function(){
 
           default:
           alert("O CPF digitado não existe");
-          $("#consultar").prop("disabled","disabled");
           break; 
         }            
       }              
@@ -62,15 +64,15 @@ $(document).ready(function(){
           case totalsubtracao1:
           primeiravalidacao = true;
           break;
+
           default:
           alert("O CPF digitado não existe");
-          $("#consultar").prop("disabled","disabled");
           break; 
         }             
       }
      //Checando se o segundo dígito é válido, caso a primeira validação for verdadeira
 
-      if(primeiravalidacao == true){
+     if(primeiravalidacao == true){
         // O peso2 decrementa até 2
 
         var peso2 = 11;      
@@ -88,13 +90,13 @@ $(document).ready(function(){
         //Se for maior que 9 o segundo dígito tem que ser 0 para ser considerado um CPF válido
         if(totalsubtracao2 >= 10){        
           switch(cpf[13]){                  
-              case "0":
-              segundavalidacao = true;
-              break
+            case "0":
+            segundavalidacao = true;
+            break
 
-              default:
-              alert("O CPF digitado é inválido");
-              break; 
+            default:
+            alert("O CPF digitado é inválido");
+            break; 
           }
         }              
         else{
@@ -112,11 +114,9 @@ $(document).ready(function(){
           }                  
         }
       }
+
     }
-
     else{
-        alert("O CPF digitado é inválido");
-    }         
-
-  });
-});
+      alert("O CPF digitado é inválido");
+    }
+  }
